@@ -1,3 +1,5 @@
+This white paper is my AI assisted analysis of https://arxiv.org/abs/2511.10851 .
+
 Core lattice construction (most important):
 
 fast_lattice.py — the final, production-quality implementation: mpmath-based LLL with dynamic precision, BKZ-style block enumeration, and exact integer verification. This is what produced the k=19 and k=25 results in Section 9.
