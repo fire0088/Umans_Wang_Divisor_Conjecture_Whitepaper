@@ -1,18 +1,15 @@
-This white paper is my AI assisted analysis of https://arxiv.org/abs/2511.10851 .
-
-
-xploring Constructive Approaches to the Umans–Wang (α,β)-Divisor Conjecture
+Exploring Constructive Approaches to the Umans–Wang (α,β)-Divisor Conjecture
 
 This repository accompanies the paper:
 
 
 Exploring Constructive Approaches to the Umans–Wang (α,β)-Divisor Conjecture:
 A Survey of Construction Strategies, Empirical Obstructions, and Lattice-Based
-Optimality Results
+Optimality Results 
+
+https://arxiv.org/abs/2511.10851 
 
 Prepared in collaboration with Claude (Anthropic), 2026.
-
-
 
 
 What this is
