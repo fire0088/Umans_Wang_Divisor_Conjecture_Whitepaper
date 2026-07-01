@@ -1,5 +1,82 @@
 This white paper is my AI assisted analysis of https://arxiv.org/abs/2511.10851 .
 
+
+xploring Constructive Approaches to the Umans–Wang (α,β)-Divisor Conjecture
+
+This repository accompanies the paper:
+
+
+Exploring Constructive Approaches to the Umans–Wang (α,β)-Divisor Conjecture:
+A Survey of Construction Strategies, Empirical Obstructions, and Lattice-Based
+Optimality Results
+
+Prepared in collaboration with Claude (Anthropic), 2026.
+
+
+
+
+What this is
+
+Umans and Wang (arXiv:2511.10851, 2025) introduced the (α,β)-Divisor Conjecture:
+whether there exist sets S, T of integers, each of size at most n^β and magnitude
+at most exp(n^α), such that every integer i ≤ n divides some difference s−t. A
+positive resolution with α, β < 1/2 would yield the first improvement in over a
+decade to the best known algorithms for polynomial factorisation and deterministic
+integer factorisation.
+
+This project documents a systematic exploration of construction strategies for that
+conjecture, producing three proved theorems about the structure of lattice-based
+constructions within this family, along with a body of numerical experiments and
+seven independent lines of evidence that all converge on the same barrier α+β ≈ 1.
+
+The conjecture itself remains open.
+
+
+Status and provenance
+
+This work was produced through an extended conversation between a human collaborator
+and Claude (an AI model by Anthropic). It has not been peer-reviewed and has
+not been checked by an independent domain expert in number theory or
+computational complexity. The three theorems are carefully checked but not
+independently verified.
+
+Specific limitations are disclosed in the paper's "Provenance and Status" section
+and in Section 11.1 ("A calibrated self-assessment"). In particular:
+
+
+The non-degeneracy lemma (Lemma 8.1) is fully proved by an elementary pigeonhole
+argument but rests on one cited classical fact (bounded basis from reduction
+theory) rather than a fully self-contained derivation.
+The numerical results in Section 9 characterise the performance of our specific
+lattice-reduction algorithm relative to the proven asymptotic target — they should
+not be read as independent evidence of convergence to exponent 3/2.
+The literature search for prior work was targeted, not exhaustive.
+
+
+
+The three theorems
+
+Theorem 1 (Optimality of hypercube constructions): For the hypercube lattice
+construction with k binary dimensions, α+β = 1 + [k·ln2 − ln(k+1)]/ln(n) + o(1),
+minimised at k ∈ {0,1} where it equals 1 exactly, and strictly greater than 1 for
+all k ≥ 2.
+
+Theorem 2 (Full-line achievability): For the star/chain construction with k =
+⌈n^β⌉ − 1 generators, α+β = 1 + o(1) for every fixed β ∈ (0,1) as n → ∞ —
+continuously along the entire trivial line, not merely at isolated points.
+
+Theorem 3 (Global optimality of the chain structure): For the two-parameter
+family of m blocks of d generators each (k = md total), g(m,d) := ln(1+m(2^d−1))
+− ln(1+md) ≥ 0 with equality iff d=1. The star/chain (d=1) is the unique global
+optimum; the hypercube (m=1, d=k) is the unique global worst point of this family
+for every fixed k.
+
+The core inequality underlying Theorem 3 is simply 2^d − 1 ≥ d for all
+positive integers d, with equality only at d=1.
+
+
+Repository structure under scripts:
+
 Core lattice construction (most important):
 
 fast_lattice.py — the final, production-quality implementation: mpmath-based LLL with dynamic precision, BKZ-style block enumeration, and exact integer verification. This is what produced the k=19 and k=25 results in Section 9.
