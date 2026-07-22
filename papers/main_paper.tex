@@ -1,0 +1,287 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+
+\title{A magnitude lower bound and a lattice-clustering reformulation \\
+of the Umans--Wang $(\alpha,\beta)$-divisor conjecture}
+\author{Eric Schultz\\ \small independent researcher \\ \small ORCID 0009-0006-6283-1696}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Umans--Wang $(\alpha,\beta)$-divisor conjecture (arXiv:2511.10851) asks, for
+fixed $\alpha,\beta<1/2$, whether there exist sets $S,T\subseteq\Z^+$ with
+$|S|,|T|\le n^{\beta}$ and elements at most $\exp(n^{\alpha})$ such that every
+$i\in[n]$ divides $s-t$ for some $s\in S,\,t\in T$; a positive answer would break
+the exponent-$3/2$ barrier for polynomial factorization. We record two things.
+First, an elementary but self-contained \emph{magnitude lower bound}
+$2\beta+\alpha\ge 1$, obtained via the discriminant of the covering set; this is
+consistent with the conjecture and reproduces, by an independent route, the bound
+implied by the primorial. Second, and our main contribution, we reduce the
+conjecture at fixed $\alpha$ to a precise \emph{lattice-clustering} statement: the
+covering set is a point of a congruence lattice of covolume $\approx e^{n/2}$ that
+must lie inside an axis-parallel box of volume $e^{K n^{\alpha}}$, and a
+generic lattice of that covolume meets the box if and only if $\alpha+\beta\ge 1$.
+Since the counting floor sits at $\alpha+\beta=(1+\alpha)/2<1$, a solution requires
+a \emph{special} lattice whose points cluster in an exponentially small box. We show
+this clustering property is \emph{equivalent} to the conjecture (not weaker), and
+observe that clustering of this \emph{type} is what the bounded-root-discriminant
+unit lattices of the 2026 refutation of the real sum--product conjecture by
+Bloom--Sawin--Schildkraut--Zhelezov provide. We are careful about the degree
+scaling: our setting appears to require such fields at \emph{polynomial} degree
+$d\asymp n^{(1-\alpha)/2}$, whereas their construction operates at
+\emph{logarithmic} degree, so their result does not directly supply what we need;
+the requisite fields exist at every degree, but whether the shortness carries over
+at polynomial degree is part of the open question, not something the reduction
+settles. This isolates a single, frontier-adjacent open question and rules out a
+family of would-be elementary obstructions.
+\end{abstract}
+
+\section{Introduction}
+
+Umans and Wang \cite{UW} reduce beating the longstanding exponent-$3/2$ barrier for
+distinct-degree factorization of degree-$n$ polynomials over $\mathbb{F}_q$ to a
+number-theoretic conjecture about covering $[n]$ by divisors of a difference set.
+
+\begin{conjecture}[$(\alpha,\beta)$-divisor conjecture \cite{UW}]\label{conj:uw}
+For infinitely many $n$ there exist $S,T\subseteq\Z^{+}$ such that
+$A=\{s-t : s\in S,\ t\in T\}$ satisfies the $n$-divisor property
+(every $i\in\{1,\dots,n\}$ divides some element of $A$), with
+(i) all elements of $S,T$ of magnitude at most $\exp(n^{\alpha})$, and
+(ii) $|S|,|T|\le n^{\beta}$.
+\end{conjecture}
+
+Achieving $\alpha+\beta\le 1+o(1)$ is trivial; the content is $\alpha,\beta<1/2$,
+and $\alpha=\beta=1/3$ would yield an exponent-$4/3$ factoring algorithm \cite{UW}.
+Throughout we work at a \emph{fixed} $\alpha<1/2$ and ask for the smallest feasible
+$\beta$.
+
+\paragraph{Reduction to the primes in $(n/2,n]$.}
+The $n$-divisor property is governed by its hardest instances, the primes
+$p\in P(n):=\{p \text{ prime}: n/2<p\le n\}$: any $i\le n$ has all prime-power
+factors at most $n$, and the primes in $(n/2,n]$ are those that can divide at most
+one difference of magnitude $O(n)$ and cannot share factors. We therefore study
+covering $P(n)$ by divisibility. By the prime number theorem
+$\log\prod_{p\in P(n)}p=\theta(n)-\theta(n/2)=\tfrac{n}{2}(1+o(1))$
+(verified numerically: the ratio is $0.963,0.997,0.999$ at $n=10^3,10^4,10^5$).
+
+\section{The magnitude lower bound}
+
+We first give a clean lower bound. Write $M=\exp(n^{\alpha})$ and, for a covering
+set $S$ with $|S|=K=n^{\beta}$, let
+$D(S)=\prod_{i<j}(s_i-s_j)$ be the Vandermonde product (the square root of the
+discriminant of $\prod_i(x-s_i)$).
+
+\begin{lemma}\label{lem:divides}
+If the difference set of $S$ covers $P(n)$ by divisibility, then
+$Q:=\prod_{p\in P(n)}p$ divides $D(S)$.
+\end{lemma}
+\begin{proof}
+Each $p\in P(n)$ divides some difference $s_i-s_j$, hence divides $D(S)$. The
+primes of $P(n)$ are distinct, so their product $Q$ divides $D(S)$.
+\end{proof}
+
+We verified Lemma~\ref{lem:divides} directly on explicit covers at $n=20,30,40$
+(e.g.\ $S=\{0,17,20,39\}$ covers $P(20)$ and $Q=46189\mid D(S)$).
+
+\begin{theorem}\label{thm:lb}
+Any $S,T$ satisfying Conjecture~\ref{conj:uw} obey $2\beta+\alpha\ge 1-o(1)$.
+\end{theorem}
+\begin{proof}
+Take $S$ with $|S|=K=n^{\beta}$ (the symmetric case; the asymmetric $S-T$ case is
+identical with $K^2$ in place of $\binom{K}{2}$). By Lemma~\ref{lem:divides},
+$Q\mid D(S)$, so $\log Q\le \log|D(S)|$. Each of the $\binom{K}{2}$ factors of
+$D(S)$ has magnitude at most $2M$, hence
+\[
+\tfrac{n}{2}(1-o(1))=\log Q\le \binom{K}{2}\log(2M)\le \tfrac{K^2}{2}\,n^{\alpha}.
+\]
+Thus $K^2 n^{\alpha}\ge n(1-o(1))$, i.e.\ $2\beta+\alpha\ge 1-o(1)$.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:lb} is consistent with Conjecture~\ref{conj:uw}: at
+$\alpha=\beta=0.4$ one has $2\beta+\alpha=1.2\ge 1$. It reproduces, via the
+discriminant, the bound that Umans--Wang obtain from
+$\prod_{p<n}p=e^{n(1+o(1))}$. It is tight \emph{as a magnitude bound}: it cannot by
+itself yield a stronger exponent, and in particular cannot decide the conjecture.
+The boundary $2\beta+\alpha=1$ is the \emph{counting floor}
+$\beta=(1-\alpha)/2$.
+\end{remark}
+
+\section{The lattice-clustering reformulation}
+
+We now reduce the conjecture at fixed $\alpha$ to a single geometric statement. Fix
+$\alpha<1/2$ and set $K=n^{(1-\alpha)/2}$ (the counting floor), $B=\exp(n^{\alpha})$.
+
+\paragraph{The congruence lattice.}
+A covering assignment attaches to each prime $p\in P(n)$ a pair of indices whose
+difference $p$ must divide. Collecting these, the admissible tuples
+$s=(s_1,\dots,s_K)$ form a coset structure inside the lattice
+\[
+L=\{s\in\Z^{K}: s_i\equiv s_j \pmod{m_{ij}}\ \text{for each assigned pair}\},
+\]
+where $m_{ij}$ is the product of primes assigned to pair $(i,j)$. Since each prime
+of $P(n)$ is assigned to exactly one pair, the moduli are pairwise coprime and the
+index $[\Z^K:L]=\prod_{p\in P(n)}p=Q$, so $L$ has covolume $Q=e^{n/2(1+o(1))}$ in
+$\R^K$.
+
+\paragraph{The box condition.}
+A covering set of magnitude $\le B$ with distinct coordinates is exactly a point of
+$L$ in the box $[0,B]^K$ with distinct coordinates. The box has volume
+$B^{K}=\exp(K n^{\alpha})$. Comparing to the covolume:
+\[
+\frac{\operatorname{vol}[0,B]^K}{\operatorname{covol}(L)}
+=\exp\!\big(K n^{\alpha}-\tfrac{n}{2}\big),
+\qquad
+K n^{\alpha}=n^{(1-\alpha)/2}\cdot n^{\alpha}=n^{(1+\alpha)/2}.
+\]
+
+\begin{proposition}\label{prop:generic}
+For a generic lattice of covolume $Q$, the expected number of points in $[0,B]^K$
+is $B^K/Q=\exp\!\big(n^{(1+\alpha)/2}-\tfrac n2\big)$. This is
+$\ge 1$ if and only if $K n^{\alpha}\ge \tfrac n2$, i.e.\ (writing $K=n^{\beta}$)
+if and only if $\alpha+\beta\ge 1$.
+\end{proposition}
+
+At the counting floor $\beta=(1-\alpha)/2$ we have
+$\alpha+\beta=(1+\alpha)/2<1$, so the box is exponentially smaller than the
+covolume and a \emph{generic} congruence lattice contains \emph{no} admissible
+point (numerically, $B^K/Q=e^{-\Theta(n)}$; the ratio $Kn^{\alpha}/\log Q$ is
+$0.017$ and $0.032$ at $n=10^6$, $\alpha=0.3,0.4$). Hence:
+
+\begin{theorem}[Reformulation]\label{thm:reform}
+Conjecture~\ref{conj:uw} at fixed $\alpha$ is equivalent to the existence of
+congruence lattices $L$ as above whose points \emph{cluster}: $L$ must contain a
+distinct-coordinate point in a box that is a factor $e^{\Theta(n)}$ smaller in
+volume than $\operatorname{covol}(L)$. Equivalently, $L$ must beat the generic
+point-count by an $e^{\Theta(n)}$ factor.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+A solution to Conjecture~\ref{conj:uw} at $\alpha$ (with $\beta$ at the floor) is,
+after fixing an assignment of primes to pairs, precisely a distinct-coordinate
+point of the corresponding $L$ in $[0,B]^K$; conversely such a point yields a
+covering set of the required magnitude and cardinality. The magnitude/cardinality
+bookkeeping is Theorem~\ref{thm:lb} and Proposition~\ref{prop:generic}. The freedom
+to choose the assignment does not change the covolume $Q$, only the shape of $L$;
+so feasibility is exactly the existence of \emph{some} assignment whose lattice
+clusters into the box.
+\end{proof}
+
+\begin{remark}[The reduction does not simplify the problem, and that is the point]
+Theorem~\ref{thm:reform} is an \emph{equivalence}, not a weakening. Any attempt to
+prove the clustering as a lighter sub-lemma is therefore misguided: it carries the
+full weight of the conjecture. The value of the reformulation is the change of
+language---from divisor covering to lattice clustering---which connects the problem
+to a concrete construction technology (below) and, as we discuss in the companion
+note, explains why an entire family of elementary ``barrier'' arguments fail: they
+attempt to lower-bound coordinates of $L$ by a generic (Minkowski-average) estimate,
+which the clustering hypothesis is precisely designed to beat.
+\end{remark}
+
+\section{The construction frontier}
+
+The clustering property in Theorem~\ref{thm:reform} is not abstract: it is exactly
+the property exploited by Bloom, Sawin, Schildkraut and Zhelezov \cite{BSSZ} in
+their 2026 refutation of the real sum--product conjecture. They construct sets
+$A=GP$ in totally real number fields $K$ of degree $d\asymp\log|A|$ with
+bounded root discriminant (Martinet towers), where $G$ is a box in the unit lattice
+(multiplicatively structured, small product set) and $P$ a box of algebraic
+integers (additively structured). In such a field the unit lattice has
+$O(1)$-size-per-dimension vectors despite large covolume---exactly the
+super-generic clustering our reformulation requires.
+
+We record the quantitative situation, and flag honestly where it is favorable and
+where it is not. To place $K=n^{(1-\alpha)/2}$ coordinates below $B=e^{n^{\alpha}}$
+against covolume $Q=e^{n/2}$, one needs shortness beating the Minkowski average
+$Q^{1/K}=e^{n^{(1+\alpha)/2}/2}$ by a factor growing polynomially in $n$
+(numerically $9\times,58\times,316\times$ at $\alpha=0.3$, $n=10^4,10^6,10^8$).
+A degree-$d$ bounded-root-discriminant field has unit lattice of rank $d-1$ with
+$O(1)$-size-per-dimension vectors, which is shortness of the required \emph{type};
+and Martinet towers provide bounded-root-discriminant fields at \emph{every} degree
+$d$, so in particular the fields exist at any degree we might ask for.
+
+\emph{However, the degree scaling is a genuine soft point of this reduction, and we
+do not claim it is resolved.} Placing $K$ coordinates subject to $K$ constraints
+calls, naively, for on the order of $K$ independent short directions, hence degree
+$d\asymp K=n^{(1-\alpha)/2}$---\emph{polynomial} in $n$. This is a different regime
+from the construction of \cite{BSSZ}, whose degree scales \emph{logarithmically},
+$d\asymp\log|A|$, in the size of the set built; the ratio $K/\log n$ grows without
+bound (it exceeds $500$ already at $\alpha=0.3$, $n=10^{12}$). Thus one cannot
+simply cite \cite{BSSZ} for the shortness we need: their $O(1)$-per-dimension bound
+is established for sets of size $|A|$ at degree $\log|A|$, whereas using degree
+$d\asymp K$ corresponds to an object of size $|A|\asymp e^{K}$, larger than and
+distinct from what they analyze. What the Martinet input gives us is the
+\emph{existence} of the fields at the required (polynomial) degree; whether their
+unit lattices supply $K$ \emph{usable, independent} short directions respecting our
+specific pair-congruences is not delivered by \cite{BSSZ} and is, in fact, part of
+the open question below.
+
+Consequently the open question is twofold and precise: whether the specific
+pair-congruences of $L$ can be embedded into such a unit lattice
+(i)~\emph{at the required polynomial degree} $d\asymp K$, and (ii)~\emph{preserving
+$O(1)$-per-dimension shortness}, so that a simultaneous solution descends to $K$
+distinct integers $\le B$. This is a \emph{descent-to-$\Z$} question of the type
+\cite{BSSZ} leave open (they resolve the $\R$, $p$-adic, and finite-field cases;
+the integer case, and hence the sum--product problem in $\Z$, remains open), now
+with the additional, unresolved demand that the shortness survive at polynomial
+rather than logarithmic degree.
+
+\paragraph{Structural notes for a specialist.}
+Three facts constrain any attack.
+(1) The conjecture uses an \emph{asymmetric} difference set $S-T$; the two-set
+freedom is genuine (exact search shows it beats the naive per-slot magnitude bound
+by a growing factor, verified at $K\le 3$), and it matches the $G\cdot P$ split of
+\cite{BSSZ}, with $S$ playing the role of the multiplicative box and $T$ the
+additive box. (2) The relevant regime is \emph{bundled}: at the floor each
+difference must be divisible by $\Theta(n^{\alpha}/\log n)$ primes of $P(n)$
+simultaneously, forcing magnitude $\approx e^{n^{\alpha}}$; small-magnitude or
+polynomial-magnitude computation cannot probe it (a difference $\le 2n$ carries at
+most one prime $>n/2$). (3) A solution must be \emph{structured} (efficiently
+computable) for the algorithmic application, so an existence proof alone does not
+suffice; the explicit \cite{BSSZ}-style construction is the right kind of target.
+
+\section{Conclusion}
+
+We have isolated the Umans--Wang conjecture at fixed $\alpha$ as a lattice-clustering
+problem equivalent to the conjecture itself, and tied it to the concrete
+bounded-root-discriminant construction technology of \cite{BSSZ}. The magnitude
+bookkeeping is favorable and the requisite fields exist at every degree; but the
+degree scaling is not resolved---our setting appears to demand shortness at
+\emph{polynomial} degree $d\asymp n^{(1-\alpha)/2}$, while \cite{BSSZ} supply it at
+\emph{logarithmic} degree---so the reduction leaves a descent-to-$\Z$ embedding
+question that is genuinely open and includes this degree gap, rather than a merely
+technical residue. The proven bound $2\beta+\alpha\ge 1$ is the only unconditional
+statement; the conjecture remains open in both directions. What we can claim is
+narrower but solid: the elementary obstructions to the conjecture provably fail
+(they are artifacts of generic estimates), and the natural constructive route is now
+explicit and precisely delimited, including an honest account of where it is not yet
+supported.
+
+\begin{thebibliography}{9}
+\bibitem{UW} C.~Umans and S.~Wang. \emph{A number-theoretic conjecture implying
+faster algorithms for polynomial factorization and integer factorization.}
+arXiv:2511.10851, 2025.
+\bibitem{BSSZ} T.~F.~Bloom, W.~Sawin, C.~Schildkraut, and D.~Zhelezov.
+\emph{The sum-product conjecture is false for real numbers.} arXiv:2605.28781, 2026.
+\bibitem{ABP} R.~Agrawal, T.~F.~Bloom, and G.~Petridis. \emph{More on the
+sum-product problem for integers with few prime factors.} arXiv:2512.04931, 2025.
+\end{thebibliography}
+
+\end{document}

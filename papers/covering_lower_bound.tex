@@ -1,0 +1,165 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\eps}{\varepsilon}
+
+\title{\bfseries A Discriminant Lower Bound for Divisibility-Covering\\
+\large Difference Sets, with an Application to the Covering-Pair Exponents}
+\author{Eric Schultz \and Claude (Anthropic)}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $S$ be a finite set of integers with all elements of absolute value at most
+$M$. We say $S$ \emph{divisibility-covers} a set $I$ of positive integers if
+every $i\in I$ divides some nonzero difference $s-s'$ with $s,s'\in S$. We prove,
+by an elementary discriminant argument, that covering the primes in a dyadic
+interval $(n/2,n]$ forces
+$|S|^2\log M \gtrsim n/2$. In the exponent scaling $|S|=n^{\beta}$,
+$M=\exp(n^{\alpha})$, this reads $2\beta+\alpha\ge 1$. The proof identifies the
+covering condition with divisibility of the Vandermonde discriminant of the
+polynomial $\prod_{s\in S}(x-s)$ by the primorial of the interval, and the bound
+is the magnitude comparison $|\!\disc| \ge \text{primorial}$. We include a remark
+delimiting what the method does and does not give: it is essentially tight as a
+\emph{magnitude} bound and cannot by itself yield any stronger exponent
+inequality.
+\end{abstract}
+
+\section{Statement}
+
+For a finite set $S\subset\mathbb Z$ write $\Delta(S)=\{\,|s-s'| : s,s'\in S,\ s\ne s'\,\}$
+for its set of positive differences.
+
+\begin{definition}
+Let $I\subset\mathbb Z_{>0}$. We say $S$ \emph{divisibility-covers} $I$ if for
+every $i\in I$ there exists $d\in\Delta(S)$ with $i\mid d$.
+\end{definition}
+
+Throughout, $n\ge 4$ and $M\ge 2$ are real parameters, and
+\[
+  P(n) = \{\,p \text{ prime} : n/2 < p \le n\,\},\qquad
+  Q(n) = \prod_{p\in P(n)} p .
+\]
+
+\begin{theorem}\label{thm:main}
+Let $S\subset\mathbb Z$ be finite with $|s|\le M$ for all $s\in S$, and suppose
+$S$ divisibility-covers $P(n)$. Then
+\[
+  |S|\,(|S|-1)\,\log(2M)\ \ge\ \log Q(n)\ =\ \theta(n)-\theta(n/2),
+\]
+where $\theta$ is the first Chebyshev function. In particular, since
+$\theta(n)-\theta(n/2)=\tfrac{n}{2}+o(n)$,
+\[
+  |S|^2\ \ge\ \frac{n}{2\log(2M)}\,\bigl(1+o(1)\bigr).
+\]
+\end{theorem}
+
+\begin{corollary}\label{cor:exponents}
+Suppose a family of covering sets satisfies $|S|=n^{\beta+o(1)}$ and
+$M=\exp\!\bigl(n^{\alpha+o(1)}\bigr)$ with $0\le\alpha<1$. Then
+\[
+  2\beta+\alpha\ \ge\ 1 .
+\]
+\end{corollary}
+
+\section{Proof}
+
+Let $S=\{s_1,\dots,s_K\}$ with $K=|S|$ and form the monic polynomial
+\[
+  f(x)=\prod_{k=1}^{K}(x-s_k)\ \in\ \mathbb Z[x].
+\]
+By the product-and-sum rule, $f'(x)=\sum_{k}\prod_{j\ne k}(x-s_j)$, and the
+discriminant of $f$ satisfies the classical identities
+\begin{equation}\label{eq:disc}
+  \disc(f)\ =\ (-1)^{K(K-1)/2}\Res(f,f')\ =\ \prod_{i<j}(s_i-s_j)^2 .
+\end{equation}
+
+\begin{lemma}\label{lem:equiv}
+For a prime $p$, we have $p\mid \disc(f)$ if and only if some nonzero difference
+$s_i-s_j$ is divisible by $p$; equivalently, iff $f$ has a repeated root modulo
+$p$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:disc}, $p\mid\disc(f)$ iff $p\mid\prod_{i<j}(s_i-s_j)^2$, iff
+$p\mid s_i-s_j$ for some $i<j$ (as $p$ is prime). The same condition says two
+roots of $f$ coincide modulo $p$, i.e.\ $f$ has a repeated root mod $p$.
+\end{proof}
+
+Now suppose $S$ divisibility-covers $P(n)$. Fix $p\in P(n)$. Since $p>n/2\ge 2$
+and $p$ divides some $d=|s_i-s_j|\in\Delta(S)$, Lemma~\ref{lem:equiv} gives
+$p\mid\disc(f)$. As the primes in $P(n)$ are distinct, their product divides
+$\disc(f)$:
+\begin{equation}\label{eq:Qdiv}
+  Q(n)=\prod_{p\in P(n)}p\ \ \Big|\ \ \disc(f).
+\end{equation}
+
+We now compare magnitudes. First, $\disc(f)\ne 0$: the $s_k$ are distinct
+integers, so every factor $s_i-s_j$ in \eqref{eq:disc} is nonzero, hence
+$\disc(f)$ is a nonzero integer. From \eqref{eq:Qdiv} and $\disc(f)\ne 0$,
+\begin{equation}\label{eq:magnitude}
+  |\disc(f)|\ \ge\ Q(n).
+\end{equation}
+Second, each $|s_i-s_j|\le |s_i|+|s_j|\le 2M$, so by \eqref{eq:disc},
+\begin{equation}\label{eq:discub}
+  \log|\disc(f)|\ =\ 2\sum_{i<j}\log|s_i-s_j|\ \le\ 2\binom{K}{2}\log(2M)\ =\ K(K-1)\log(2M).
+\end{equation}
+Combining \eqref{eq:magnitude} and \eqref{eq:discub},
+\[
+  K(K-1)\log(2M)\ \ge\ \log Q(n)\ =\ \sum_{p\in P(n)}\log p\ =\ \theta(n)-\theta(n/2),
+\]
+which is the first display of the theorem. By the prime number theorem in the
+form $\theta(x)=x+o(x)$ we have $\theta(n)-\theta(n/2)=\tfrac n2+o(n)$, giving
+$K^2\ge \dfrac{n}{2\log(2M)}(1+o(1))$.
+
+For Corollary~\ref{cor:exponents}, substitute $K=n^{\beta+o(1)}$ and
+$\log(2M)=n^{\alpha+o(1)}$: then $n^{2\beta+o(1)}\ge n^{1-\alpha+o(1)}$, i.e.
+$2\beta+\alpha\ge 1$. \qed
+
+\section{Scope of the method}
+
+\begin{remark}[The bound is tight \emph{as a magnitude bound}]
+Inequality \eqref{eq:discub} is sharp to leading order: for $K$ points spread in
+$[0,M]$, the maximum of $\sum_{i<j}\log|s_i-s_j|$ is $\tfrac{K^2}{2}\log M
+-O(K^2)$ (attained near Fekete/Chebyshev configurations). Hence no choice of the
+positions of the $s_k$ improves the exponent in Theorem~\ref{thm:main}: the
+additive structure of a difference set affects only the $O(K^2)$ lower-order
+term, not the leading $\tfrac{K^2}{2}\log M$. Consequently the discriminant
+magnitude comparison \emph{cannot} yield any exponent bound stronger than
+$2\beta+\alpha\ge1$.
+\end{remark}
+
+\begin{remark}[What is \emph{not} proved]
+Theorem~\ref{thm:main} is consistent with, but does not establish, the stronger
+inequality $\alpha+\beta\ge 1$ (which would require $\beta\ge 1-\alpha$, roughly
+twice the exponent proved here). Whether $2\beta+\alpha\ge1$ is attained --
+equivalently, whether divisibility-covering sets exist with
+$|S|=n^{(1-\alpha)/2+o(1)}$ -- is left open. Establishing either a matching
+construction or a strictly stronger lower bound appears to need input beyond the
+magnitude of the discriminant; heuristic considerations (a sum--product
+antagonism between additive economy and the multiplicative richness of a
+difference set) suggest the honest frontier lies there.
+\end{remark}
+
+\begin{remark}[Covering the full interval]
+If $S$ divisibility-covers all of $(n/2,n]\cap\mathbb Z$ (not merely the primes),
+the hypothesis of Theorem~\ref{thm:main} holds a fortiori, so the same lower
+bound applies.
+\end{remark}
+
+\end{document}

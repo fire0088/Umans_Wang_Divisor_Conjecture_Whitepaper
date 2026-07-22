@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{observation}{Observation}
+\theoremstyle{definition}
+\newtheorem{deadend}{Dead end}
+
+\newcommand{\Z}{\mathbb{Z}}
+
+\title{What fails, and why: negative results on the Umans--Wang \\
+$(\alpha,\beta)$-divisor conjecture}
+\author{Eric Schultz\\ \small independent researcher \\ \small ORCID 0009-0006-6283-1696}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This companion note documents the approaches we tried against the Umans--Wang
+$(\alpha,\beta)$-divisor conjecture that \emph{failed}, and---more usefully---why
+each failed. The central empirical lesson is that every elementary ``barrier''
+argument we produced was, on exact re-examination, an artifact: a
+generic/average magnitude estimate mistaken for a lower bound, a degenerate
+solution, or a solver timeout misread as infeasibility. We catalogue these so that
+future work does not repeat them, and we map the construction families that do and
+do not help, localizing the one mechanism (algebraic factoring of differences) that
+gives genuine but only constant-factor benefit in $\Z$.
+\end{abstract}
+
+\section{Scope}
+The main note \cite{main} proves $2\beta+\alpha\ge 1$ and reduces the conjecture at
+fixed $\alpha$ to a lattice-clustering statement equivalent to the conjecture. Here
+we record the negative space around that result: the arguments that looked like
+progress and were not. All claims below were checked by exact computation; the
+recurring theme is that exact checks repeatedly overturned plausible heuristics.
+
+\section{The recurring artifact: generic bounds are not lower bounds}
+
+Every ``barrier'' (i.e.\ would-be refutation of the conjecture) we found reduced to
+the same error, in five guises.
+
+\begin{deadend}[Vertex-log / incident-log forcing]
+One argues: a coordinate $s_i$ constrained modulo a product of primes of total log
+$L$ ``must'' have magnitude $\approx e^{L}$, and since some vertex accumulates
+$L\gg n^{\alpha}$, the budget is exceeded. \textbf{Why it fails:} this is the
+Minkowski \emph{average}, not a lower bound. Residue sharing---choosing neighbours'
+values so the forced residue is small---defeats it. Exact search finds solutions
+below the average in every tested case.
+\end{deadend}
+
+\begin{deadend}[Row-product forcing in the asymmetric ($S-T$) model]
+The two-sided analogue: $s_i$ is ``forced'' modulo the product of its row's primes
+$\approx e^{n/2K}$. \textbf{Why it fails:} identical to the above. With two free
+sets, choosing the $t_j$ pulls $s_i$ strictly below the row product; exact search
+confirms the gap grows with $K$.
+\end{deadend}
+
+\begin{deadend}[Degenerate covers]
+Small ``solutions'' returned by unconstrained search often place $s_i=t_j$, so the
+difference is $0$ and ``covers'' a prime trivially and invalidly. \textbf{Why it
+fails:} a zero difference is not a cover; forbidding $s_i=t_j$ (and requiring
+distinctness \emph{within} each set only) removes these. Some genuine solutions
+survive, but the degenerate ones must be filtered first.
+\end{deadend}
+
+\begin{deadend}[Timeout as infeasibility]
+An integer program for the minimum $K$ or minimum magnitude returns
+``not solved'' (a solver time-out); this is read as ``infeasible,'' inflating the
+apparent minimum and manufacturing a barrier. \textbf{Why it fails:} time-out is
+not infeasibility. Distinguishing \texttt{Optimal}/\texttt{Infeasible}/\texttt{Timeout}
+explicitly, and cross-checking small cases against brute force, dissolves the effect;
+at the only cleanly solved sizes the counting floor is in fact reachable.
+\end{deadend}
+
+\begin{deadend}[Wrong magnitude regime]
+Small-$n$ experiments (magnitude $\le 2n$, or $n^{O(1)}$) are used to estimate the
+scaling exponent. \textbf{Why it fails:} the conjecture's difficulty lives in the
+\emph{bundled} regime, where each difference is a product of $\Theta(n^{\alpha}/\log
+n)$ primes $>n/2$ and magnitude is $e^{n^{\alpha}}$. A difference $\le 2n$ carries
+at most one prime $>n/2$, so no polynomial-magnitude experiment ever enters the
+regime that matters; observed exponents there are about the wrong quantity.
+\end{deadend}
+
+\begin{observation}
+The uniform moral: in this problem, no counting or forcing argument yields a valid
+magnitude lower bound, because the covering freedom (residue sharing across a
+coprime system) always beats the generic estimate. The only genuine obstruction is
+the lattice-clustering statement of \cite{main}, which is equivalent to the
+conjecture itself. \emph{Any future ``barrier'' claim derived from a counting or
+forcing bound should be presumed an artifact until checked exactly.}
+\end{observation}
+
+\section{Construction families: what helps and what does not}
+
+On the constructive (pro-conjecture) side we tested many explicit families,
+measuring how many primes of $(n/2,n]$ a typical difference bundles relative to a
+random set.
+
+\begin{itemize}
+\item \textbf{Perfect squares: the one $\Z$ win.} With $S=\{a_i^2\}$, differences
+factor as $a_i^2-a_j^2=(a_i-a_j)(a_i+a_j)$, giving two independent large factors and
+$\approx 1.4$--$2\times$ the bundling of a random set. This is a genuine mechanism
+but only a \emph{constant} factor; it does not change the exponent.
+\item \textbf{Higher powers: no.} For $a^k-b^k$ with $k\ge 3$, staying within the
+magnitude budget forces the roots below $B^{1/k}$, collapsing the extra factors;
+bundling drops back to generic. The benefit peaks sharply at $k=2$.
+\item \textbf{Factorials: structurally useless.} A prime $p>n/2$ divides $m!$ only
+if $m\ge p$, but $m!\le B$ forces $m$ small; factorials are smooth in \emph{small}
+primes only, the wrong range.
+\item \textbf{Near-squares ($a\cdot b$, $a\approx b$): no.} Bundling is generic.
+This sharpens the squares result: the benefit comes from the \emph{exact algebraic
+identity} $a^2-b^2=(a-b)(a+b)$, not merely from two roughly equal factors.
+\item \textbf{Fractal / digit-restricted / Beatty / Fibonacci: no.} These impose
+\emph{additive} structure (small difference sets), which is the sum--product
+antagonist of the multiplicative richness covering needs. The golden ratio, despite
+appearing in the unit-separation lemma of \cite{BSSZ}, does not transfer: its role
+there is archimedean separation, unrelated to integer divisibility.
+\item \textbf{Naive $G\cdot P$ in $\Z$: no better than random.} A sparse geometric
+$G$ is the known-inadequate Balog--Wooley example; a dense multiplicative $G$
+(smooth numbers) matches random, because in the accessible regime random already
+covers. The genuine $G\cdot P$ power requires the \emph{unit lattice} of a number
+field, which has no faithful $\Z$ analogue.
+\end{itemize}
+
+\begin{observation}
+Every family that helps does so through one mechanism: making differences factor
+into several large independent pieces. In $\Z$ this tops out at two factors
+(squares); reaching $\Theta(n^{\alpha}/\log n)$ factors per difference is inherently
+multi-dimensional and lands in the number-field construction of \cite{BSSZ}. The
+construction search is, in this sense, saturated: the ceiling in $\Z$ is understood,
+and the only route past it is the one identified in the main note.
+\end{observation}
+
+\section{Computational limits}
+
+Exact methods (bitmask minimum-$K$ search; brute-force covering; small integer
+programs) reach roughly $n\le 34$ for minimum-$K$ and $K\le 3$--$8$ for the
+congruence systems, before the exponential wall. The exact minimum-$K$ sequence
+does show the gap to the counting floor staying in $\{0,1\}$ up to $n=34$---mildly
+suggestive that the floor is reachable---but this is in the no-bundling regime and
+therefore not evidence about the conjecture's true (bundled) regime. No computation
+available to us reaches that regime, which requires super-polynomial magnitudes;
+this is not a limitation of implementation but of the problem's location.
+
+\section{Summary}
+The negative results converge on a single picture consistent with the main note: the
+elementary obstructions are mirages (five documented forms of one error), the
+$\Z$-native constructions saturate at a constant-factor gain from the difference-of-
+squares identity, and the true difficulty is the number-field clustering question.
+Recording these dead ends is the practical contribution here: they are the specific
+paths a future attack can skip.
+
+\begin{thebibliography}{9}
+\bibitem{main} E.~Schultz. \emph{A magnitude lower bound and a lattice-clustering
+reformulation of the Umans--Wang $(\alpha,\beta)$-divisor conjecture.} Companion
+paper, 2026.
+\bibitem{UW} C.~Umans and S.~Wang. \emph{A number-theoretic conjecture implying
+faster algorithms for polynomial factorization and integer factorization.}
+arXiv:2511.10851, 2025.
+\bibitem{BSSZ} T.~F.~Bloom, W.~Sawin, C.~Schildkraut, and D.~Zhelezov.
+\emph{The sum-product conjecture is false for real numbers.} arXiv:2605.28781, 2026.
+\end{thebibliography}
+
+\end{document}
